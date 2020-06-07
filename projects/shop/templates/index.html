@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    <script>
+        function buy() {
+            let name = $('#inputName').val();
+            let select = $('#inlineFormCustomSelect').val();
+            let address = $('#inputAddress').val();
+            let number = $('#inputNumber').val();
+
+            if ($('#inputName').val() == '') {
+                alert('이름을 입력해주세요');
+                $('#inputName').focus();
+                return;
+            } else if ($('#inlineFormCustomSelect').val() == '') {
+                alert('수량을 선택해주세요');
+                $('#inlineFormCustomSelect').focus();
+                return;
+            } else if ($('#inputAddress').val() == '') {
+                alert('주소를 입력해주세요');
+                $('#inputAddress').focus();
+                return;
+            } else if ($('#inputNumber').val() == '') {
+                alert('전화번호를 입력해주세요');
+                $('#inputNumber').focus();
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/orders",
+                data: { name_give: name, select_give: select, address_give: address, number_give: number },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        alert(response['msg']);
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            $('#orders-box').html('');
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/orders",
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let orders = response['orders'];
+                        for (let i = 0; i < orders.length; i++) {
+                            make_card(orders[i]['name'], orders[i]['select'], orders[i]['address'], orders[i]['number']);
+                        }
+                    } else {
+                        alert('주문을 받아오지 못했습니다');
+                    }
+                }
+            })
+        }
+
+        function make_card(name, select, address, number) {
+            let temp_html = `<tr>
+                                <td>${name}</td>
+                                <td>${select}</td>
+                                <td>${address}</td>
+                                <td>${number}</td>
+                            </tr>`;
+            $('#orders-box').append(temp_html);
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "https://api.manana.kr/exchange/rate.json",
+                data: {},
+                success: function (response) {
+                    let dollar_val = response[1]['rate'];
+                    let temp_html = `달러-원 환율 : ${dollar_val}`
+                    $('#dollar-price').text(temp_html);
+                }
+            })
+        });
+    </script>
+
+    <title>스파르타코딩클럽 | 부트스트랩 연습하기</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .wrap {
+            width: 600px;
+            margin: auto;
+        }
+
+        .card-img-top {
+            border-radius: 24px;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-top: 24px;
+        }
+
+        .btn-primary {
+            margin-top: 40px;
+        }
+
+        .col-sm-2 {
+            width: 600px;
+        }
+
+        .dollar-text {
+            color: #007bff;
+        }
+
+        .orders {
+            margin-top: 40px;
+        }
+    </style>
+
+</head>
+
+<body class="wrap">
+    <div class="title">
+        <img class="card-img-top" src="https://image.hellonature.net/shop/data/goods/img/22024/c_o_1542344164634l1.jpg"
+            alt="itemimage">
+        <h2 class="itemname">아우어베이커리의 시그니처 메뉴</h2>
+        <p class="price">가격: 4,700원/개</p>
+        <p>이제는 국내를 대표하는 베이커리 맛집이죠? 인정할 수밖에 없는 핫한 브랜드 아우어베이커리의 시그니처 메뉴 더티초코예요. 매장에서도 1인당 2개밖에 살 수 없는 귀한 빵. 이제 웨이팅 없이 클릭 한
+            번으로 집에서도 아우어베이커리의 더티초코를 맛볼 수 있어요. 흔하지 않은 기회이니 놓치지 마세요.</p>
+        <p class="dollar-text" id="dollar-price"></p>
+    </div>
+
+    <form>
+        <div class="form-group row">
+            <label for="inputName" class="col-sm-2 col-form-label">주문자 성함</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputName" placeholder=" ">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="inlineFormCustomSelect">수량</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="inlineFormCustomSelect">
+                    <option value="">-- 수량을 선택하세요 --</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="inputName" class="col-sm-2 col-form-label">주소</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputAddress" placeholder=" ">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="inputName" class="col-sm-2 col-form-label">전화번호</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputNumber" placeholder=" ">
+            </div>
+        </div>
+    </form>
+
+    <button onclick="buy()" type="button" class="btn-primary btn-lg btn-block">주문하기</button>
+
+    <div class="orders">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">이름</th>
+                    <th scope="col">수량</th>
+                    <th scope="col">주소</th>
+                    <th scope="col">전화번호</th>
+                </tr>
+            </thead>
+            <tbody id="orders-box">
+                <tr>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

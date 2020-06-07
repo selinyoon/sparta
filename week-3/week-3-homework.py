@@ -14,10 +14,27 @@ songs = soup.select('#body-content > div.newest-list > div > table > tbody > tr'
 #tr:nth-child(3) > td.info > a.title.ellipsis
 #tr:nth-child(4) > td.info > a.artist.ellipsis
 
+#이전코드
+#for song in songs:
+    #a_tag = song.select_one('td > a.title.ellipsis')
+    #if a_tag is not None:
+        #number = song.select_one('td.number').text[0].strip()
+        #title = a_tag.text.strip()
+        #people = song.select_one('td.info > a.artist.ellipsis').text.strip()
+        #print (number, title, people)
+
+
+#수정 코드
+#decompose()
 for song in songs:
     a_tag = song.select_one('td > a.title.ellipsis')
     if a_tag is not None:
-        number = song.select_one('td.number').text[0].strip()
+        td_tag = song.select_one('td.number')
+        td_tag.span.decompose()
+        #td_tag의 span태그를 제거해라
+
+        number = td_tag.text.strip()
         title = a_tag.text.strip()
         people = song.select_one('td.info > a.artist.ellipsis').text.strip()
+
         print (number, title, people)
