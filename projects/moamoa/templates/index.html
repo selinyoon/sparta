@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>모아X모아</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
+
+    <style>
+        .title-text {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .label-text {
+            font-size: 14px;
+            color: #999999;
+            margin-bottom: 8px;
+        }
+
+        .gnb-text {
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 74px;
+            color: #222222;
+        }
+
+        .gnb {
+            height: 74px;
+            background: #f7f7f7;
+            text-align: center;
+        }
+
+        .wrap {
+            width: 1080px;
+            margin: 0 auto;
+        }
+
+        .section-item {
+            width: 712px;
+            padding-top: 40px;
+            float: left;
+        }
+
+        .btn-primary {
+            width: 712px;
+            height: 48px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #222222;
+            margin-top: 16px;
+        }
+
+        .section-total {
+            width: 344px;
+            margin-left: 24px;
+            padding-top: 40px;
+            float: left;
+        }
+
+        .total-box {
+            width: 344px;
+            height: 270px;
+            margin-top: 16px;
+            padding: 16px;
+            border: 1px solid #E2E3E6;
+        }
+
+        .inserting-box {
+            width: 712px;
+            padding: 24px;
+            border: 1px solid #E2E3E6;
+            margin-top: 16px;
+        }
+
+        .input {
+            width: 548px;
+            height: 40px;
+            margin-right: 8px;
+            background-color: #f5f5f5;
+        }
+
+        .btn-secondary {
+            width: 100px;
+            height: 40px;
+            font-size: 16px;
+            color: #333333;
+            background-color: #C6C8CC;
+        }
+    </style>
+
+    <script>
+        function inserturl() {
+            let status = $('#insert-box').css('block');
+
+            if ($('#insert-box').css('display') == 'block') {
+                $('#insert-box').hide()
+                $('#inserting-box-btn').text('그룹 추가')
+            } else {
+                $('#insert-box').show()
+                $('#inserting-box-btn').text('취소')
+            }
+        }
+
+        function addgroup() {
+            let newgroup = $('#newgroup').val();
+            
+            let temp_html = `<tr>
+                                <td>${newgroup}</td>
+                            </tr>`;
+            $('#group-list').append(temp_html);
+        }
+
+    </script>
+</head>
+
+<body>
+    <header class="gnb">
+        <p class="gnb-text">모아 X 모아</p>
+    </header>
+    <main>
+        <div class="wrap">
+            <section class="section-item">
+                <p class="title-text">그룹</p>
+                <button id="inserting-box-btn" class="btn-primary" onclick="inserturl()">그룹 추가</button>
+
+                <div id="insert-box" class="inserting-box">
+                    <p class="label-text">그룹명</p>
+                    <input id="newgroup" class="input" placeholder="그룹명을 입력해주세요">
+                    <button class="btn-secondary" onclick="addgroup()">추가하기</button>
+                </div>
+
+                <tbody id="group-list">
+                    <tr>
+                        <td>그룹명</td>
+                    </tr>
+                </tbody>
+
+            </section>
+
+            <section class="section-total">
+                <p class="title-text">컬렉션</p>
+                <div class="total-box">합계</div>
+            </section>
+            
+        </div>
+    </main>
+</body>
+
+</html>
